@@ -108,6 +108,7 @@ public class UserController {
         }
     }
 
+    @LoginRequired
     @RequestMapping(path = "/updatePassword", method = RequestMethod.POST)
     public String updatePassword(String originalPassword, String newPassword, String confirmPassword,
                                  @CookieValue("ticket") String ticket, Model model) {
