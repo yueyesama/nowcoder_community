@@ -4,6 +4,8 @@ import com.wby.community.entity.LoginTicket;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
+// 不推荐使用，存储登录凭证推荐用redis实现
+@Deprecated
 public interface LoginTicketMapper {
 
     @Insert({
