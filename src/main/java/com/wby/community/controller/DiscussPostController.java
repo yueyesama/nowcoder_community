@@ -1,9 +1,7 @@
 package com.wby.community.controller;
 
-import com.wby.community.entity.Comment;
-import com.wby.community.entity.DiscussPost;
-import com.wby.community.entity.Page;
-import com.wby.community.entity.User;
+import com.wby.community.entity.*;
+import com.wby.community.event.EventProducer;
 import com.wby.community.service.CommentService;
 import com.wby.community.service.DiscussPostService;
 import com.wby.community.service.LikeService;
@@ -40,6 +38,9 @@ public class DiscussPostController implements CommunityConstant {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addDiscussPost(String title, String content) {
@@ -54,6 +55,14 @@ public class DiscussPostController implements CommunityConstant {
         post.setContent(content);
         post.setCreateTime(new Date());
         discussPostService.addDiscussPost(post);
+
+        // 触发发帖事件
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(user.getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(post.getId());
+        eventProducer.fileEvent(event);
 
         // 报错的情况，将来统一处理.
         return CommunityUtil.getJsonString(0, "发布成功！");
