@@ -21,7 +21,7 @@ public class RedisKeyUtil {
     }
 
     // 某个用户的赞
-    // like:user:userId -> int
+    // like:user:userId -> string（个数）
     public static String getUserLikeKey(int userId) {
         return PREFIX_USER_LIKE + SPLIT + userId;
     }
@@ -39,16 +39,19 @@ public class RedisKeyUtil {
     }
 
     // 登录验证码
+    // kaptcha:owner -> string（验证码内容）
     public static String getKaptchaKey(String owner) {
         return PREFIX_KAPTCHA + SPLIT + owner;
     }
 
     // 登录的凭证
+    // ticket:{ticket} -> string（json格式的LoginTicket对象）
     public static String getTicketKey(String ticket) {
         return PREFIX_TICKET + SPLIT + ticket;
     }
 
     // 用户
+    // user:userId -> string（json格式的User对象）
     public static String getUserKey(int userId) {
         return PREFIX_USER + SPLIT + userId;
     }

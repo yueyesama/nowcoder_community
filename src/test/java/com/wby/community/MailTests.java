@@ -1,13 +1,16 @@
 package com.wby.community;
 
 import com.wby.community.util.MailClient;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
 //启用CommunityApplication作为配置类
 @ContextConfiguration(classes = CommunityApplication.class)

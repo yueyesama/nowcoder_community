@@ -2,20 +2,23 @@ package com.wby.community;
 
 import com.wby.community.dao.AlphaDao;
 import com.wby.community.service.AlphaService;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
 //启用CommunityApplication作为配置类
 @ContextConfiguration(classes = CommunityApplication.class)
-class CommunityApplicationTests implements ApplicationContextAware {
+public class CommunityApplicationTests implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
 
