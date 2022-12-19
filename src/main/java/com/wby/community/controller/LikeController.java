@@ -53,10 +53,10 @@ public class LikeController implements CommunityConstant {
                     .setEntityId(entityId)
                     .setEntityUserId(entityUserId)
                     .setData("postId", postId);
-            eventProducer.fileEvent(event);
+            eventProducer.fireEvent(event);
         }
 
-        return CommunityUtil.getJsonString(0, null, map);
+        return CommunityUtil.getJSONString(0, null, map);
 
     }
 

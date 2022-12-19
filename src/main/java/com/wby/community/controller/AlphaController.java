@@ -1,7 +1,6 @@
 package com.wby.community.controller;
 
 import com.wby.community.util.CommunityUtil;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -172,7 +171,7 @@ public class AlphaController {
     public String testAjax(String name, int age) {
         System.out.println(name);
         System.out.println(age);
-        return CommunityUtil.getJsonString(0, "ok");
+        return CommunityUtil.getJSONString(0, "ok");
     }
 
 }

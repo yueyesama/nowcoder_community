@@ -28,7 +28,7 @@ public class ExceptionAdvice {
         if ("XMLHttpRequest".equals(xRequestedWith)) {
             response.setContentType("application/plain;charset=utf-8");
             PrintWriter writer = response.getWriter();
-            writer.write(CommunityUtil.getJsonString(1, "服务器异常！"));
+            writer.write(CommunityUtil.getJSONString(1, "服务器异常！"));
         } else {
             response.sendRedirect(request.getContextPath() + "/error");
         }
