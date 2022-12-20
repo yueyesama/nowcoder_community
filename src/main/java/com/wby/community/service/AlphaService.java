@@ -5,7 +5,11 @@ import com.wby.community.dao.UserMapper;
 import com.wby.community.entity.DiscussPost;
 import com.wby.community.entity.User;
 import com.wby.community.util.CommunityUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -28,6 +32,8 @@ public class AlphaService {
 
     @Autowired
     private TransactionTemplate transactionTemplate;
+
+    private static final Logger logger = LoggerFactory.getLogger(AlphaService.class);
 
     // REQUIRED 支持当前事务（外部事务），如果不存在则创建新事务.
     // REQUIRES_NEW 创建一个新的事务，并暂停当前事务（外部事务）.
@@ -87,5 +93,17 @@ public class AlphaService {
             }
         });
     }
+
+    // 可以让该方法在多线程的环境下，被异步调用
+    @Async
+    public void execute1() {
+        logger.debug("execute1");
+    }
+
+//    @Scheduled(initialDelay = 10000, fixedDelay = 1000)
+//    public void execute2() {
+//        logger.debug("execute2");
+//    }
+
 
 }
