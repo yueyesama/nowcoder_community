@@ -10,7 +10,7 @@ import java.util.List;
 public interface DiscussPostMapper {
 
     //在查看 个人主页/我的帖子 时才用到userId
-    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit);
+    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit, int orderMode);
 
 
     // @Param注解用于给参数取别名
@@ -26,5 +26,7 @@ public interface DiscussPostMapper {
     int updateType(int id, int type);
 
     int updateStatus(int id, int status);
+
+    int updateScore(int id, double score);
 
 }
