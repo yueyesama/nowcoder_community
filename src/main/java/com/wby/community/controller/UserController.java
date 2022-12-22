@@ -3,7 +3,10 @@ package com.wby.community.controller;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import com.wby.community.annotation.LoginRequired;
+import com.wby.community.entity.DiscussPost;
+import com.wby.community.entity.Page;
 import com.wby.community.entity.User;
+import com.wby.community.service.DiscussPostService;
 import com.wby.community.service.FollowService;
 import com.wby.community.service.LikeService;
 import com.wby.community.service.UserService;
@@ -25,6 +28,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -64,6 +71,9 @@ public class UserController implements CommunityConstant {
 
     @Autowired
     private FollowService followService;
+
+    @Autowired
+    private DiscussPostService discussPostService;
 
     @LoginRequired
     @RequestMapping(path = "setting", method = RequestMethod.GET)
@@ -225,8 +235,33 @@ public class UserController implements CommunityConstant {
         return "/site/profile";
     }
 
+    @RequestMapping("/userPost/{userId}")
+    public String getUserDiscussPostList(@PathVariable("userId") int userId, Model model, Page page) {
 
+        page.setPath("/user/userPost/" + userId);
+        int postRows = discussPostService.findDiscussPostRows(userId);
+        page.setRows(postRows);
 
+        // 获取目标用户的所有帖子
+        List<DiscussPost> discussPosts =
+                discussPostService.findDiscussPosts(userId, page.getOffset(), page.getLimit(), 0);
 
+        List<Map<String, Object>> discussPostsMap = new ArrayList<>();
+        for (DiscussPost discussPost : discussPosts) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("discussPost", discussPost);
+            map.put("likeCount", likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPost.getId()));
+
+            discussPostsMap.add(map);
+        }
+
+        User targetUser = userService.findUserById(userId);
+        model.addAttribute("user", targetUser);
+        model.addAttribute("postRows", postRows);
+
+        model.addAttribute("discussPosts", discussPostsMap);
+
+        return "/site/user-post";
+    }
 
 }
