@@ -34,7 +34,7 @@
 				</h6>
 				<!-- 作者 -->
 				<div class="media pb-3 border-bottom">
-					<a href="profile.html">
+					<a th:href="@{|/user/profile/${user.id}|}">
 						<img th:src="${user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
 					</a>
 					<div class="media-body">
@@ -71,7 +71,7 @@
 				<ul class="list-unstyled mt-4">
 					<!-- 循环显示评论 -->
 					<li class="media pb-3 pt-3 mb-3 border-bottom" th:each="cvo:${comments}">
-						<a href="profile.html">
+						<a th:href="@{|/user/profile/${cvo.user.id}|}">
 							<img th:src="${cvo.user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
 						</a>
 						<div class="media-body">
@@ -130,11 +130,11 @@
 													<input type="hidden" name="targetId" th:value="${rvo.user.id}">
 												</div>
 												<div class="text-right mt-2">
-													<button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
+													<button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
 												</div>
 											</form>
 										</div>
-									</div>								
+									</div>
 								</li>
 
 								<!-- 回复输入框 -->
@@ -146,7 +146,7 @@
 											<input type="hidden" name="entityId" th:value="${cvo.comment.id}">
 										</div>
 										<div class="text-right mt-2">
-											<button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
+											<button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
 										</div>
 									</form>
 								</li>
