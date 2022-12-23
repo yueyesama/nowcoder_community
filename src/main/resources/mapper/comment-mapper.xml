@@ -42,4 +42,22 @@
         where id = #{id}
     </select>
 
+    <select id="selectCommentByUserIdAndEntityType" resultType="Comment">
+        select <include refid="selectFields"></include>
+        from comment
+        where status = 0
+        and user_id = #{userId}
+        and entity_type = #{entityType}
+        order by create_time desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectCommentCountByUserIdAndEntityType" resultType="int">
+        select count(id)
+        from comment
+        where status = 0
+        and user_id = #{userId}
+        and entity_type = #{entityType}
+    </select>
+
 </mapper>

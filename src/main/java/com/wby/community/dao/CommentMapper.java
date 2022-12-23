@@ -15,4 +15,8 @@ public interface CommentMapper {
     int insertComment(Comment comment);
 
     Comment selectCommentById(int id);
+
+    List<Comment> selectCommentByUserIdAndEntityType(int userId, int entityType, int offset, int limit);
+
+    int selectCommentCountByUserIdAndEntityType(int userId, int entityType);
 }

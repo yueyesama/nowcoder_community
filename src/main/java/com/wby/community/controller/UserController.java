@@ -3,13 +3,11 @@ package com.wby.community.controller;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import com.wby.community.annotation.LoginRequired;
+import com.wby.community.entity.Comment;
 import com.wby.community.entity.DiscussPost;
 import com.wby.community.entity.Page;
 import com.wby.community.entity.User;
-import com.wby.community.service.DiscussPostService;
-import com.wby.community.service.FollowService;
-import com.wby.community.service.LikeService;
-import com.wby.community.service.UserService;
+import com.wby.community.service.*;
 import com.wby.community.util.CommunityConstant;
 import com.wby.community.util.CommunityUtil;
 import com.wby.community.util.HostHolder;
@@ -74,6 +72,9 @@ public class UserController implements CommunityConstant {
 
     @Autowired
     private DiscussPostService discussPostService;
+
+    @Autowired
+    private CommentService commentService;
 
     @LoginRequired
     @RequestMapping(path = "setting", method = RequestMethod.GET)
@@ -152,7 +153,7 @@ public class UserController implements CommunityConstant {
         String suffix = fileName.substring(fileName.lastIndexOf("."));
         // 响应图片
         response.setContentType("image/" + suffix);
-        try(
+        try (
                 FileInputStream fis = new FileInputStream(fileName);
                 OutputStream os = response.getOutputStream();
         ) {
@@ -235,12 +236,11 @@ public class UserController implements CommunityConstant {
         return "/site/profile";
     }
 
-    @RequestMapping("/userPost/{userId}")
+    @RequestMapping(path = "/userPost/{userId}", method = RequestMethod.GET)
     public String getUserDiscussPostList(@PathVariable("userId") int userId, Model model, Page page) {
 
         page.setPath("/user/userPost/" + userId);
-        int postRows = discussPostService.findDiscussPostRows(userId);
-        page.setRows(postRows);
+        page.setRows(discussPostService.findDiscussPostRows(userId));
 
         // 获取目标用户的所有帖子
         List<DiscussPost> discussPosts =
@@ -257,11 +257,34 @@ public class UserController implements CommunityConstant {
 
         User targetUser = userService.findUserById(userId);
         model.addAttribute("user", targetUser);
-        model.addAttribute("postRows", postRows);
 
         model.addAttribute("discussPosts", discussPostsMap);
 
         return "/site/user-post";
     }
 
+    @RequestMapping(path = "/userComment/{userId}", method = RequestMethod.GET)
+    public String getUserCommentList(@PathVariable("userId") int userId, Model model, Page page) {
+
+        page.setPath("/user/userComment/" + userId);
+        page.setRows(commentService.findCommentCountByUserIdAndEntityType(
+                userId, CommunityConstant.ENTITY_TYPE_POST));
+
+        List<Comment> comments =
+                commentService.findCommentByUserIdAndEntityType(
+                        userId, ENTITY_TYPE_POST, page.getOffset(), page.getLimit());
+
+        List<Map<String, Object>> commentsMap = new ArrayList<>();
+        for (Comment comment : comments) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("comment", comment);
+            map.put("postOfComment", discussPostService.findDiscussPostById(comment.getEntityId()));
+            commentsMap.add(map);
+        }
+
+        model.addAttribute("user", userService.findUserById(userId));
+        model.addAttribute("comments", commentsMap);
+
+        return "/site/user-comment";
+    }
 }

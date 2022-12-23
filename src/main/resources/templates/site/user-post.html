@@ -24,18 +24,19 @@
 						</li>
 						<li class="nav-item">
 							<a class="nav-link active" href="#">
-								<i th:text="${loginUser.id==user.id?'我':'TA'}">我</i>的帖子</a>
+								<i th:text="${loginUser==null||user.id!=loginUser.id?'TA':'我'}">我</i>的帖子</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="my-reply.html">
-								<i th:text="${loginUser.id==user.id?'我':'TA'}">我</i>的回复</a>
+							<a class="nav-link" th:href="@{|/user/userComment/${user.id}|}">
+								<i th:text="${loginUser==null||user.id!=loginUser.id?'TA':'我'}">我</i>的评论</a>
 						</li>
 					</ul>
-					<a th:href="@{|/user/profile/${loginUser.id}|}" class="text-muted position-absolute rt-0">返回我的主页&gt;</a>
+					<a th:if="${loginUser!=null}" th:href="@{|/user/profile/${loginUser.id}|}"
+					   class="text-muted position-absolute rt-0">返回我的主页&gt;</a>
 				</div>
-				<!-- 我的帖子 -->
+				<!-- 用户帖子 -->
 				<div class="mt-4">
-					<h6><b class="square"></b> 发布的帖子(<i th:text="${postRows}">93</i>)</h6>
+					<h6><b class="square"></b> 发布的帖子(<i th:text="${page.rows}">93</i>)</h6>
 					<ul class="list-unstyled mt-4 pl-3 pr-3">
 						<li class="border-bottom pb-3 mt-4" th:each="map:${discussPosts}">
 							<div class="font-size-16 text-info">
