@@ -163,4 +163,9 @@ public class LoginController implements CommunityConstant {
         return "redirect:/login";
     }
 
+    @RequestMapping(path = "/forget", method = RequestMethod.GET)
+    public String forget() {
+        return "/site/forget";
+    }
+
 }
